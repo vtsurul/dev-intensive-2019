@@ -4,12 +4,19 @@ object Utils {
 
     fun parseFullName(fullName:String?):Pair<String?, String?>{
 
-        //TODO FIX ME!!!
+        val parts : List<String>? = (
+            if (fullName != null)
+                fullName!!.trim()
+            else
+                fullName)?.split(" ")
 
-        val parts : List<String>? = fullName?.split(" ")
+        var firstName = parts?.getOrNull(0)
+        var lastName = parts?.getOrNull(1)
 
-        val firstName = parts?.getOrNull(0)
-        val lastName = parts?.getOrNull(1)
+        if(firstName == "" || firstName == " ") {
+            firstName = null
+            lastName = null
+        }
 
         //return Pair(firstName, lastName)
 
@@ -17,10 +24,28 @@ object Utils {
     }
 
     fun transliteration(payload: String, divider: String = " "): String {
-        TODO("not implemented")
+        return payload
     }
 
     fun toInitials(firstName: String?, lastName: String?): String? {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
+        val firstInitial = when (firstName) {
+            "", " ", null -> null
+            else -> firstName.trim().toUpperCase().substring(0,1)}
+
+        val lastInitial = when (lastName) {
+            "", " ", null -> null
+            else -> lastName.trim().toUpperCase().substring(0,1)}
+
+        if (firstInitial != null && lastInitial != null)
+            return "$firstInitial$lastInitial"
+
+        if (firstInitial != null)
+            return "$firstInitial"
+
+        if (lastInitial != null)
+            return "$lastInitial"
+
+        return null
     }
 }
