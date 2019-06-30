@@ -24,7 +24,56 @@ object Utils {
     }
 
     fun transliteration(payload: String, divider: String = " "): String {
-        return payload
+
+        var result = ""
+
+        payload.toLowerCase().toCharArray().forEach {
+
+            when (it) {
+                'а' -> result += "a"
+                'б' -> result += "b"
+                'в' -> result += "v"
+                'г' -> result += "g"
+                'д' -> result += "d"
+                'е' -> result += "e"
+                'ё' -> result += "e"
+                'ж' -> result += "zh"
+                'з' -> result += "z"
+                'и' -> result += "i"
+                'й' -> result += "i"
+                'к' -> result += "k"
+                'л' -> result += "l"
+                'м' -> result += "m"
+                'н' -> result += "n"
+                'о' -> result += "o"
+                'п' -> result += "p"
+                'р' -> result += "r"
+                'с' -> result += "s"
+                'т' -> result += "t"
+                'у' -> result += "u"
+                'ф' -> result += "f"
+                'х' -> result += "h"
+                'ц' -> result += "ts"
+                'ч' -> result += "ch"
+                'ш' -> result += "sh"
+                'щ' -> result += "sh"
+                'ъ' -> result += ""
+                'ы' -> result += "i"
+                'ь' -> result += ""
+                'э' -> result += "e"
+                'ю' -> result += "yu"
+                'я' -> result += "ya"
+                else -> result += "$divider"
+            }
+        }
+
+        var capitalizedResult = ""
+
+        result.split(divider).forEach {
+            capitalizedResult += "$divider${it.capitalize()}"
+        }
+
+        return capitalizedResult.substring(divider.length)
     }
 
     fun toInitials(firstName: String?, lastName: String?): String? {
