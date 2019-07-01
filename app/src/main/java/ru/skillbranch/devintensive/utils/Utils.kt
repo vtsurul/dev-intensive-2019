@@ -67,24 +67,24 @@ object Utils {
             }
         }
 
-        var capitalizedResult = ""
+        var capResult = ""
 
         result.split(divider).forEach {
-            capitalizedResult += "$divider${it.capitalize()}"
+            capResult += "$divider${it.capitalize()}"
         }
 
-        return capitalizedResult.substring(divider.length)
+        return capResult.substring(divider.length)
     }
 
     fun toInitials(firstName: String?, lastName: String?): String? {
 
         val firstInitial = when (firstName) {
             "", " ", null -> null
-            else -> firstName.trim().toUpperCase().substring(0,1)}
+            else -> firstName.trim().toUpperCase().substring(0, 1)}
 
         val lastInitial = when (lastName) {
             "", " ", null -> null
-            else -> lastName.trim().toUpperCase().substring(0,1)}
+            else -> lastName.trim().toUpperCase().substring(0, 1)}
 
         if (firstInitial != null && lastInitial != null)
             return "$firstInitial$lastInitial"
