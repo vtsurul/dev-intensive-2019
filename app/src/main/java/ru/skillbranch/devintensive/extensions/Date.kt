@@ -80,7 +80,7 @@ enum class TimeUnits
 
     private fun pluralMap(): Map<String, String> = when(this) {
         SECOND -> mapOf("один" to "секунда", "мало" to "секунды", "много" to "секунд")
-        MINUTE -> mapOf("один" to "минуту", "мало" to "минуты", "много" to "минут")
+        MINUTE -> mapOf("один" to "минута", "мало" to "минуты", "много" to "минут")
         HOUR -> mapOf("один" to "час", "мало" to "часа", "много" to "часов")
         DAY -> mapOf("один" to "день", "мало" to "дня", "много" to "дней")
     }
