@@ -40,11 +40,11 @@ fun Date.humanizeDiff(date: Date = Date()): String {
             0.sec, 1.sec -> "только что"
             in 2.sec .. 45.sec -> "несколько секунд назад"
             in 46.sec .. 75.sec -> "минуту назад"
-            in 76.sec .. 45.min -> "${TimeUnits.MINUTE.plural(diff)} назад"
+            in 76.sec .. 45.min -> "${TimeUnits.MINUTE.plural(diff/MINUTE)} назад"
             in 45.min + 1 .. 75.min -> "час назад"
-            in 75.min + 1 .. 22.hour -> "${TimeUnits.HOUR.plural(diff)} назад"
+            in 75.min + 1 .. 22.hour -> "${TimeUnits.HOUR.plural(diff/HOUR)} назад"
             in 22.hour + 1 .. 26.hour -> "день назад"
-            in 26.hour + 1 .. 360.day -> "${TimeUnits.DAY.plural(diff)} назад"
+            in 26.hour + 1 .. 360.day -> "${TimeUnits.DAY.plural(diff/DAY)} назад"
             else -> "более года назад"
         }
 
@@ -54,11 +54,11 @@ fun Date.humanizeDiff(date: Date = Date()): String {
             0.sec, 1.sec -> "сейчас"
             in 2.sec .. 45.sec -> "через несколько секунд"
             in 46.sec .. 75.sec -> "через минуту"
-            in 76.sec .. 45.min -> "через ${TimeUnits.MINUTE.plural(diff)}"
+            in 76.sec .. 45.min -> "через ${TimeUnits.MINUTE.plural(diff/ MINUTE)}"
             in 45.min + 1 .. 75.min -> "через час"
-            in 75.min + 1 .. 22.hour -> "через ${TimeUnits.HOUR.plural(diff)}"
+            in 75.min + 1 .. 22.hour -> "через ${TimeUnits.HOUR.plural(diff/HOUR)}"
             in 22.hour + 1 .. 26.hour -> "через день"
-            in 26.hour + 1 .. 360.day -> "через ${TimeUnits.DAY.plural(diff)}"
+            in 26.hour + 1 .. 360.day -> "через ${TimeUnits.DAY.plural(diff/DAY)}"
             else -> "более чем через год"
         }
     }
@@ -68,10 +68,10 @@ enum class TimeUnits
 {
     SECOND, MINUTE, HOUR, DAY;
 
-    fun plural(value: Int) :String {
+    fun plural(value: Long) :String {
 
         return "$value ${pluralMap()[
-                when (value) {
+                when (value.toInt()) {
                     1 -> "один"
                     2, 3, 4 -> "мало"
                     else -> "много"
