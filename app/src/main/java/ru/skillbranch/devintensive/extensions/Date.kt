@@ -32,19 +32,19 @@ fun Date.add(value: Int, units: TimeUnits = TimeUnits.SECOND): Date{
 
 fun Date.humanizeDiff(date: Date = Date()): String {
 
-    val diff: Int = (date.time - this.time).toInt()
+    val diff: Long = (date.time - this.time)
 
     return if ( diff >= 0) {
 
         when (diff) {
             0.sec, 1.sec -> "только что"
-            in 2.sec .. 45.sec -> "несколько секунд назад"
-            in 46.sec .. 75.sec -> "минуту назад"
-            in 76.sec .. 45.min -> "${TimeUnits.MINUTE.plural(diff/MINUTE)} назад"
-            in 45.min + 1 .. 75.min -> "час назад"
-            in 75.min + 1 .. 22.hour -> "${TimeUnits.HOUR.plural(diff/HOUR)} назад"
-            in 22.hour + 1 .. 26.hour -> "день назад"
-            in 26.hour + 1 .. 360.day -> "${TimeUnits.DAY.plural(diff/DAY)} назад"
+            in 2.sec..45.sec -> "несколько секунд назад"
+            in 46.sec..75.sec -> "минуту назад"
+            in 76.sec..45.min -> "${TimeUnits.MINUTE.plural(diff/MINUTE)} назад"
+            in 45.min + 1..75.min -> "час назад"
+            in 75.min + 1..22.hour -> "${TimeUnits.HOUR.plural(diff/HOUR)} назад"
+            in 22.hour + 1..26.hour -> "день назад"
+            in 26.hour + 1..360.day -> "${TimeUnits.DAY.plural(diff/DAY)} назад"
             else -> "более года назад"
         }
 
@@ -86,7 +86,7 @@ enum class TimeUnits
     }
 }
 
-val Int.sec get() = this * SECOND.toInt()
-val Int.min get() = this * MINUTE.toInt()
-val Int.hour get() = this * HOUR.toInt()
-val Int.day get() = this * DAY.toInt()
+val Int.sec get() = this * SECOND
+val Int.min get() = this * MINUTE
+val Int.hour get() = this * HOUR
+val Int.day get() = this * DAY
