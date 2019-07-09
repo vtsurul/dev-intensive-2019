@@ -1,6 +1,14 @@
 package ru.skillbranch.devintensive.utils
 
+import kotlin.text.StringBuilder
+
 object Utils {
+
+    private val translitMap = mapOf(
+        'а' to "a", 'б' to "b", 'в' to "v", 'г' to "g", 'д' to "d", 'е' to "e", 'ё' to "e", 'ж' to "zh", 'з' to "z",
+        'и' to "i", 'й' to "i", 'к' to "k", 'л' to "l", 'м' to "m", 'н' to "n", 'о' to "o", 'п' to "p", 'р' to "r",
+        'с' to "s", 'т' to "t", 'у' to "u", 'ф' to "f", 'х' to "h", 'ц' to "ts", 'ч' to "ch", 'ш' to "sh", 'щ' to "sh'",
+        'ъ' to "", 'ы' to "i", 'ь' to "", 'э' to "e", 'ю' to "yu", 'я' to "ya")
 
     fun parseFullName(fullName:String?):Pair<String?, String?>{
 
@@ -23,57 +31,16 @@ object Utils {
         return firstName to lastName
     }
 
-    fun transliteration(payload: String, divider: String = " "): String {
+    fun transliteration(payload: String, divider: String = " ") = buildString {
 
-        var result = ""
-
-        payload.toLowerCase().toCharArray().forEach {
-
-            when (it) {
-                'а' -> result += "a"
-                'б' -> result += "b"
-                'в' -> result += "v"
-                'г' -> result += "g"
-                'д' -> result += "d"
-                'е' -> result += "e"
-                'ё' -> result += "e"
-                'ж' -> result += "zh"
-                'з' -> result += "z"
-                'и' -> result += "i"
-                'й' -> result += "i"
-                'к' -> result += "k"
-                'л' -> result += "l"
-                'м' -> result += "m"
-                'н' -> result += "n"
-                'о' -> result += "o"
-                'п' -> result += "p"
-                'р' -> result += "r"
-                'с' -> result += "s"
-                'т' -> result += "t"
-                'у' -> result += "u"
-                'ф' -> result += "f"
-                'х' -> result += "h"
-                'ц' -> result += "ts"
-                'ч' -> result += "ch"
-                'ш' -> result += "sh"
-                'щ' -> result += "sh"
-                'ъ' -> result += ""
-                'ы' -> result += "i"
-                'ь' -> result += ""
-                'э' -> result += "e"
-                'ю' -> result += "yu"
-                'я' -> result += "ya"
-                else -> result += "$divider"
-            }
+        payload.forEach {
+            this.append(
+                when(it) {
+                    ' ' -> divider
+                    else -> translitMap[it] ?: translitMap[it.toLowerCase()]?.capitalize() ?: it.toString()
+                }
+            )
         }
-
-        var capResult = ""
-
-        result.split(divider).forEach {
-            capResult += "$divider${it.capitalize()}"
-        }
-
-        return capResult.substring(divider.length)
     }
 
     fun toInitials(firstName: String?, lastName: String?): String? {

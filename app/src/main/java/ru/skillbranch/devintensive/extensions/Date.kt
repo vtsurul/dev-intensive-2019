@@ -32,53 +32,61 @@ fun Date.add(value: Int, units: TimeUnits = TimeUnits.SECOND): Date{
 
 fun Date.humanizeDiff(date: Date = Date()): String {
 
-    return when(date.time - this.time) {
+    val diff: Int = (date.time - this.time).toInt()
 
-        0.toLong(), SECOND * 1.toLong() -> "только что"
+    return if ( diff >= 0) {
 
-        in (SECOND * 1.toLong()) + 1 .. SECOND * 45.toLong() -> "несколько секунд назад"
+        when (diff) {
+            0.sec, 1.sec -> "только что"
+            in 2.sec .. 45.sec -> "несколько секунд назад"
+            in 46.sec .. 75.sec -> "минуту назад"
+            in 76.sec .. 45.min -> "${TimeUnits.MINUTE.plural(diff)} назад"
+            in 45.min + 1 .. 75.min -> "час назад"
+            in 75.min + 1 .. 22.hour -> "${TimeUnits.HOUR.plural(diff)} назад"
+            in 22.hour + 1 .. 26.hour -> "день назад"
+            in 26.hour + 1 .. 360.day -> "${TimeUnits.DAY.plural(diff)} назад"
+            else -> "более года назад"
+        }
 
-        in (SECOND * 45.toLong()) + 1 .. SECOND * 75.toLong() -> "минуту назад"
+    } else {
 
-        in (SECOND * 75.toLong()) + 1 .. MINUTE * 45.toLong() -> "${persuadeNumeral(date.time, this.time, TimeUnits.MINUTE)} назад"
-
-        in (MINUTE * 45.toLong()) + 1 .. MINUTE * 75.toLong() -> "час назад"
-
-        in (MINUTE * 75.toLong()) + 1 .. HOUR * 22.toLong() -> "${persuadeNumeral(date.time, this.time, TimeUnits.HOUR)} назад"
-
-        in (HOUR * 22.toLong()) + 1 .. HOUR * 26.toLong() -> "день назад"
-
-        in (HOUR * 26.toLong()) + 1 .. DAY * 360.toLong() -> "${persuadeNumeral(date.time, this.time, TimeUnits.DAY)} назад"
-
-        else -> "более года назад"
+        when (- diff) {
+            0.sec, 1.sec -> "сейчас"
+            in 2.sec .. 45.sec -> "через несколько секунд"
+            in 46.sec .. 75.sec -> "через минуту"
+            in 76.sec .. 45.min -> "через ${TimeUnits.MINUTE.plural(diff)}"
+            in 45.min + 1 .. 75.min -> "через час"
+            in 75.min + 1 .. 22.hour -> "через ${TimeUnits.HOUR.plural(diff)}"
+            in 22.hour + 1 .. 26.hour -> "через день"
+            in 26.hour + 1 .. 360.day -> "через ${TimeUnits.DAY.plural(diff)}"
+            else -> "более чем через год"
+        }
     }
 }
 
-private fun persuadeNumeral(time1 : Long, time2 : Long, timeUnit: TimeUnits) : String {
+enum class TimeUnits
+{
+    SECOND, MINUTE, HOUR, DAY;
 
-    val timeDiff: Long = (time1 - time2) /
-            when(timeUnit) {
-                TimeUnits.MINUTE -> MINUTE
-                TimeUnits.HOUR -> HOUR
-                else -> DAY
-            }
+    fun plural(value: Int) :String {
 
-    return when(timeDiff)
-    {
-        1.toLong() -> "$timeDiff ${
-                if(timeUnit == TimeUnits.MINUTE) "минуту" else if (timeUnit == TimeUnits.HOUR) "час" else "день"}"
+        return "$value ${pluralMap()[
+                when (value) {
+                    1 -> "один"
+                    2, 3, 4 -> "мало"
+                    else -> "много"
+                }]}"
+    }
 
-        2.toLong(), 3.toLong(), 4.toLong() -> "$timeDiff ${
-            if(timeUnit == TimeUnits.MINUTE) "минуты" else if (timeUnit == TimeUnits.HOUR) "часа" else "дня"}"
-
-        else -> "$timeDiff ${
-            if(timeUnit == TimeUnits.MINUTE) "минут" else if (timeUnit == TimeUnits.HOUR) "часов" else "дней"}"
+    private fun pluralMap(): Map<String, String> = when(this) {
+        SECOND -> mapOf("один" to "секунда", "мало" to "секунды", "много" to "секунд")
+        MINUTE -> mapOf("один" to "минута", "мало" to "минуты", "много" to "минут")
+        HOUR -> mapOf("один" to "час", "мало" to "часа", "много" to "часов")
+        DAY -> mapOf("один" to "день", "мало" to "дня", "много" to "дней")
     }
 }
 
-enum class TimeUnits{
-    SECOND,
-    MINUTE,
-    HOUR,
-    DAY
-}
+val Int.sec get() = this * SECOND.toInt()
+val Int.min get() = this * MINUTE.toInt()
+val Int.hour get() = this * HOUR.toInt()
+val Int.day get() = this * DAY.toInt()
