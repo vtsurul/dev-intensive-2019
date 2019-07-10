@@ -70,17 +70,21 @@ enum class TimeUnits
 
     fun plural(value: Long) :String {
 
+        val i10:Long = value % 10
+        val i100:Long = value %100
+
         return "$value ${pluralMap()[
-                when (value) {
-                    1.toLong() -> "один"
-                    2.toLong(), 3.toLong(), 4.toLong() -> "мало"
+                when {
+                    i100 in 10..20 -> "много"
+                    i10 in 2..4 -> "мало"
+                    i10 == 1.toLong() -> "один"
                     else -> "много"
                 }]}"
     }
 
     private fun pluralMap(): Map<String, String> = when(this) {
-        SECOND -> mapOf("один" to "секунда", "мало" to "секунды", "много" to "секунд")
-        MINUTE -> mapOf("один" to "минута", "мало" to "минуты", "много" to "минут")
+        SECOND -> mapOf("один" to "секунду", "мало" to "секунды", "много" to "секунд")
+        MINUTE -> mapOf("один" to "минуту", "мало" to "минуты", "много" to "минут")
         HOUR -> mapOf("один" to "час", "мало" to "часа", "много" to "часов")
         DAY -> mapOf("один" to "день", "мало" to "дня", "много" to "дней")
     }
