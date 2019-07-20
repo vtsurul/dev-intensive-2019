@@ -23,7 +23,7 @@ class Bender (var status: Status = Status.NORMAL, var question: Question = Quest
             if(question.answers.contains(answer.toLowerCase()))
             {
                 question = question.nextQuestion()
-                "Отлично - это правильный ответ!\n${question.question}" to status.color
+                "Отлично - ты справился\n${question.question}" to status.color
             }
             else
             {
