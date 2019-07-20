@@ -4,9 +4,12 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.Rect
 import android.util.Log
+import android.util.TypedValue
+import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import kotlin.math.roundToLong
 
 fun Activity.hideKeyboard() {
 
@@ -17,23 +20,18 @@ fun Activity.hideKeyboard() {
 
 fun Activity.isKeyboardOpen(): Boolean {
 
+    val rootView = findViewById<View>(android.R.id.content)
     val rect = Rect()
-    this.window.decorView.getWindowVisibleDisplayFrame(rect)
 
-    val displayHeight = rect.bottom - rect.top
-    val height = this.window.decorView.height
+    rootView.getWindowVisibleDisplayFrame(rect)
 
-    return (displayHeight.toDouble() / height.toDouble()) > 0.8
+    val heightDiff = rootView.height - rect.height()
+    val a = TypedValue.applyDimension (TypedValue.COMPLEX_UNIT_DIP , 50.toFloat(), this.resources.displayMetrics).roundToLong()
+    
+    return a < heightDiff
 }
 
 fun Activity.isKeyboardClosed(): Boolean {
 
-    val rect = Rect()
-    this.window.decorView.getWindowVisibleDisplayFrame(rect)
-
-    val displayHeight = rect.bottom - rect.top
-    val height = this.window.decorView.height
-
-    return ((displayHeight.toDouble() / height.toDouble()) > 0.8).not()
-
+    return this.isKeyboardOpen().not()
 }
