@@ -12,11 +12,7 @@ object Utils {
 
     fun parseFullName(fullName:String?):Pair<String?, String?>{
 
-        val parts : List<String>? = (
-            if (fullName != null)
-                fullName!!.trim()
-            else
-                fullName)?.split(" ")
+        val parts : List<String>? = (fullName?.trim() ?: fullName)?.split(" ")
 
         var firstName = parts?.getOrNull(0)
         var lastName = parts?.getOrNull(1)
